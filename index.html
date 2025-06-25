@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK Player - Panchayat Season 4</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a8e1;
+            --secondary-color: #ff6b6b;
+            --bg-color: #121212;
+            --text-color: #f5f5f5;
+            --card-bg: #1e1e1e;
+            --header-bg: rgba(18, 18, 18, 0.9);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --border: 1px solid #333;
+        }
+
+        .light-theme {
+            --primary-color: #00a8e1;
+            --secondary-color: #ff6b6b;
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --header-bg: rgba(245, 245, 245, 0.9);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border: 1px solid #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: var(--border);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0088c0;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e05555;
+            transform: translateY(-2px);
+        }
+
+        .user-greeting {
+            font-weight: 600;
+            margin-right: 15px;
+            animation: colorChange 5s infinite;
+        }
+
+        @keyframes colorChange {
+            0% { color: var(--primary-color); }
+            50% { color: var(--secondary-color); }
+            100% { color: var(--primary-color); }
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Side Menu Styles */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--card-bg);
+            z-index: 1001;
+            transition: left 0.3s;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .side-menu-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: var(--border);
+        }
+
+        .side-menu-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .side-menu-content {
+            padding: 20px;
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+        }
+
+        .menu-section h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .menu-item {
+            padding: 10px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item:hover {
+            color: var(--primary-color);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .password-generator {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            display: none;
+        }
+
+        .password-options {
+            margin-bottom: 10px;
+        }
+
+        .password-options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .password-options input[type="range"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .password-result {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .password-result input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px 0 0 5px;
+            border: var(--border);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .password-result button {
+            padding: 8px 12px;
+            border-radius: 0 5px 5px 0;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .password-result button:hover {
+            background-color: #0088c0;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        /* Welcome Overlay */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .welcome-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .welcome-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1003;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: var(--border);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .form-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Main Content Styles */
+        main {
+            padding-top: 80px;
+        }
+
+        section {
+            padding: 60px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 80vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://i.supaimg.com/d8d32823-e860-4428-8600-e83b0ca601da.jpg') center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* About Section */
+        .about-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-poster {
+            flex: 1;
+            max-width: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-poster img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-content h3:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            margin-top: 5px;
+        }
+
+        .about-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        /* Episodes Section */
+        .episodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .episode-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .episode-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .episode-poster {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .episode-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .episode-card:hover .episode-poster img {
+            transform: scale(1.05);
+        }
+
+        .episode-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .episode-card:hover .episode-play {
+            opacity: 1;
+        }
+
+        .episode-play i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-left: 5px;
+        }
+
+        .episode-info {
+            padding: 15px;
+        }
+
+        .episode-number {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .episode-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .episode-duration {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .episode-watch {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .episode-watch:hover {
+            background-color: #0088c0;
+        }
+
+        .episode-watch.active {
+            background-color: #4CAF50;
+        }
+
+        /* Video Player Section */
+        .video-player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1004;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-player.active {
+            display: flex;
+        }
+
+        .video-container {
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .video-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .video-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: white;
+        }
+
+        .video-quality {
+            position: relative;
+        }
+
+        .quality-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quality-dropdown {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: var(--card-bg);
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 10;
+        }
+
+        .quality-dropdown.show {
+            display: block;
+        }
+
+        .quality-option {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .quality-option:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Feedback Section */
+        .feedback-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 5px;
+            border: var(--border);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 150px;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+
+        /* Share Section */
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .share-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #1da1f2;
+        }
+
+        .whatsapp {
+            background-color: #25d366;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 30px 5%;
+            text-align: center;
+            border-top: var(--border);
+        }
+
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .about-container {
+                flex-direction: column;
+            }
+            
+            .about-poster {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .about-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-content h1 {
+                font-size: 2rem;
+            }
+            
+            .welcome-content p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0088c0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-content" data-aos="zoom-in">
+            <h1>Welcome to MK Player</h1>
+            <p>Experience the rustic charm and hilarious adventures in Panchayat Season 4. Join Abhishek Tripathi as he navigates life in the rural heartland of India.</p>
+            <button class="btn btn-primary" id="continueBtn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <img src="https://i.supaimg.com/dd053cc2-3d07-4c93-bbe9-ccd4565ea1cf.webp" alt="MK Player Logo" class="logo">
+            <span class="logo-text">MK PLAYER</span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <span class="user-greeting" id="userGreeting"></span>
+            <button class="btn btn-secondary" id="watchTrailerBtn">Watch Trailer</button>
+            <button class="btn btn-primary" id="loginBtn">Login</button>
+            <button class="btn btn-secondary" id="registerBtn">Register</button>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h3>MK Player Menu</h3>
+            <span class="side-menu-close" id="sideMenuClose"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="side-menu-content">
+            <div class="menu-section">
+                <h3>Navigation</h3>
+                <div class="menu-item" data-section="hero"><i class="fas fa-home"></i> Home</div>
+                <div class="menu-item" data-section="about"><i class="fas fa-info-circle"></i> About Panchayat</div>
+                <div class="menu-item" data-section="episodes"><i class="fas fa-list"></i> Episode List</div>
+                <div class="menu-item" data-section="feedback"><i class="fas fa-comment"></i> Feedback</div>
+            </div>
+            
+            <div class="menu-section" id="profileSection">
+                <h3>Profile</h3>
+                <div class="menu-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</div>
+            </div>
+            
+            <div class="menu-section">
+                <h3>Settings</h3>
+                <div class="theme-toggle-container">
+                    <span><i class="fas fa-moon"></i> Dark Mode</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="menu-item" id="passwordGeneratorBtn"><i class="fas fa-key"></i> Password Generator</div>
+                <div class="menu-item" id="notificationsBtn"><i class="fas fa-bell"></i> Notifications</div>
+                <div class="menu-item" id="helpBtn"><i class="fas fa-question-circle"></i> Help</div>
+            </div>
+            
+            <div class="password-generator" id="passwordGenerator">
+                <h4>Password Generator</h4>
+                <div class="password-options">
+                    <label>
+                        Length: <span id="lengthValue">12</span>
+                        <input type="range" id="lengthSlider" min="6" max="32" value="12">
+                    </label>
+                    <label><input type="checkbox" id="uppercase" checked> Uppercase</label>
+                    <label><input type="checkbox" id="numbers" checked> Numbers</label>
+                    <label><input type="checkbox" id="symbols" checked> Symbols</label>
+                </div>
+                <div class="password-result">
+                    <input type="text" id="generatedPassword" readonly>
+                    <button id="copyPassword"><i class="fas fa-copy"></i></button>
+                </div>
+                <button class="btn btn-primary" id="generatePassword" style="width: 100%; margin-top: 10px;">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle-btn" id="themeToggleBtn">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content" data-aos="zoom-in">
+            <span class="modal-close" id="loginClose">&times;</span>
+            <h2 class="modal-title">Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUserId">User ID</label>
+                    <input type="text" id="loginUserId" required>
+                </div>
+                <div class="form-group password-input">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                    <span class="password-toggle" id="loginToggle"><i class="fas fa-eye"></i></span>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                <div class="form-footer">
+                    <p>Don't have an account? <a id="switchToRegister">Register</a></p>
+                    <p><a id="forgotPassword">Forgot Password?</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content" data-aos="zoom-in">
+            <span class="modal-close" id="registerClose">&times;</span>
+            <h2 class="modal-title">Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerMobile">Mobile Number</label>
+                    <input type="tel" id="registerMobile" required>
+                </div>
+                <div class="form-group password-input">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                    <span class="password-toggle" id="registerToggle"><i class="fas fa-eye"></i></span>
+                </div>
+                <div class="form-group password-input">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" required>
+                    <span class="password-toggle" id="registerConfirmToggle"><i class="fas fa-eye"></i></span>
+                </div>
+                <div class="form-group">
+                    <label for="registerUserId">User ID (auto-generated)</label>
+                    <input type="text" id="registerUserId" readonly>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+                <div class="form-footer">
+                    <p>Already have an account? <a id="switchToLogin">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Recovery Modal -->
+    <div class="modal" id="recoveryModal">
+        <div class="modal-content" data-aos="zoom-in">
+            <span class="modal-close" id="recoveryClose">&times;</span>
+            <h2 class="modal-title">Password Recovery</h2>
+            <form id="recoveryForm">
+                <div class="form-group">
+                    <label for="recoveryEmail">Email</label>
+                    <input type="email" id="recoveryEmail" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Recovery Link</button>
+                <div class="form-footer">
+                    <p>Remember your password? <a id="switchToLoginFromRecovery">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-content" data-aos="fade-right">
+                <h1>Panchayat Season 4</h1>
+                <p>Join Abhishek Tripathi as he continues his hilarious journey as the Panchayat secretary in the rural village of Phulera. New challenges, new friendships, and more laughter await!</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="watchNowBtn">Watch Now</button>
+                    <button class="btn btn-secondary" id="heroTrailerBtn">Watch Trailer</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="section-title" data-aos="fade-up">
+                <h2>About Panchayat Season 4</h2>
+            </div>
+            <div class="about-container" data-aos="fade-up">
+                <div class="about-poster">
+                    <img src="https://i.supaimg.com/d8d32823-e860-4428-8600-e83b0ca601da.jpg" alt="Panchayat Season 4">
+                </div>
+                <div class="about-content">
+                    <h3>About Panchayat Season 4</h3>
+                    <p>Panchayat is a comedy-drama web series that follows the life of Abhishek Tripathi, a city-bred engineering graduate who reluctantly takes up a job as a Panchayat secretary in the remote village of Phulera. Season 4 continues his journey as he becomes more accustomed to rural life while dealing with the quirky villagers and their problems.</p>
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <h4>Genre</h4>
+                            <p>Comedy, Drama</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Cast</h4>
+                            <p>Jitendra Kumar, Neena Gupta, Raghubir Yadav</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Director</h4>
+                            <p>Deepak Kumar Mishra</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Streaming On</h4>
+                            <p>Amazon Prime Video</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Episodes Section -->
+        <section id="episodes">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Episodes</h2>
+            </div>
+            <div class="episodes-grid">
+                <!-- Episode 1 -->
+                <div class="episode-card" data-episode="1" data-aos="fade-up" data-aos-delay="100">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/d8d32823-e860-4428-8600-e83b0ca601da.jpg" alt="Episode 1">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 1</div>
+                        <div class="episode-title">New Beginnings</div>
+                        <div class="episode-duration">45 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 2 -->
+                <div class="episode-card" data-episode="2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/580bdb70-3645-44f3-95eb-abad01091338.jpg" alt="Episode 2">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 2</div>
+                        <div class="episode-title">Village Politics</div>
+                        <div class="episode-duration">42 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 3 -->
+                <div class="episode-card" data-episode="3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/d489d6f0-d675-4a05-8e2b-07943cfec6da.jpg" alt="Episode 3">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 3</div>
+                        <div class="episode-title">Festival Time</div>
+                        <div class="episode-duration">48 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 4 -->
+                <div class="episode-card" data-episode="4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/4966172b-0cc3-4d59-bb61-76ff9ec55f5a.jpg" alt="Episode 4">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 4</div>
+                        <div class="episode-title">Unexpected Visitor</div>
+                        <div class="episode-duration">44 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 5 -->
+                <div class="episode-card" data-episode="5" data-aos="fade-up" data-aos-delay="100">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/0db8bdca-5bc5-4b7d-96f0-78fe45c78b9d.jpg" alt="Episode 5">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 5</div>
+                        <div class="episode-title">The Decision</div>
+                        <div class="episode-duration">46 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 6 -->
+                <div class="episode-card" data-episode="6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/473f3562-63c4-4333-8e8b-468d1289e2d4.jpg" alt="Episode 6">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 6</div>
+                        <div class="episode-title">Conflict Resolution</div>
+                        <div class="episode-duration">43 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 7 -->
+                <div class="episode-card" data-episode="7" data-aos="fade-up" data-aos-delay="300">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/d53636cc-f9c8-402c-9df6-935f061dc2be.jpg" alt="Episode 7">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 7</div>
+                        <div class="episode-title">Revelations</div>
+                        <div class="episode-duration">47 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+                
+                <!-- Episode 8 -->
+                <div class="episode-card" data-episode="8" data-aos="fade-up" data-aos-delay="400">
+                    <div class="episode-poster">
+                        <img src="https://i.supaimg.com/f4219070-5985-4ebf-823b-53aa69d8d0fe.jpg" alt="Episode 8">
+                        <div class="episode-play">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="episode-info">
+                        <div class="episode-number">Episode 8</div>
+                        <div class="episode-title">New Horizons</div>
+                        <div class="episode-duration">50 min</div>
+                        <button class="episode-watch">Watch Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Player -->
+        <div class="video-player" id="videoPlayer">
+            <div class="video-container">
+                <div class="video-header">
+                    <div class="video-title" id="videoTitle">Panchayat Season 4</div>
+                    <div class="video-close" id="videoClose"><i class="fas fa-times"></i></div>
+                </div>
+                <div class="video-wrapper">
+                    <iframe id="videoFrame" src="" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+                </div>
+                <div class="video-controls">
+                    <div class="video-quality">
+                        <button class="quality-btn" id="videoQualityBtn">Quality</button>
+                        <div class="quality-dropdown" id="videoQualityDropdown">
+                            <div class="quality-option" data-quality="360">360p</div>
+                            <div class="quality-option" data-quality="720">720p</div>
+                            <div class="quality-option" data-quality="1080">1080p</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <section id="feedback">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Feedback</h2>
+            </div>
+            <div class="feedback-form" data-aos="fade-up">
+                <textarea class="feedback-textarea" id="feedbackText" placeholder="Share your thoughts about Panchayat Season 4..."></textarea>
+                <button class="btn btn-primary" id="submitFeedback" style="width: 100%;">Send Feedback</button>
+            </div>
+        </section>
+
+        <!-- Share Section -->
+        <section id="share">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Share With Friends</h2>
+            </div>
+            <div class="share-buttons" data-aos="fade-up">
+                <div class="share-btn facebook" id="facebookShare">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="share-btn twitter" id="twitterShare">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <div class="share-btn whatsapp" id="whatsappShare">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 MK Player. All Rights Reserved.</p>
+            <p>Designed for entertainment purposes.</p>
+        </div>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: false
+        });
+
+        // Current date - June 23, 2025
+        const currentDate = new Date(2025, 5, 23); // Note: Months are 0-indexed (5 = June)
+
+        // DOM Elements
+        const welcomeOverlay = document.getElementById('welcomeOverlay');
+        const continueBtn = document.getElementById('continueBtn');
+        const hamburger = document.getElementById('hamburger');
+        const sideMenu = document.getElementById('sideMenu');
+        const sideMenuClose = document.getElementById('sideMenuClose');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const recoveryModal = document.getElementById('recoveryModal');
+        const loginClose = document.getElementById('loginClose');
+        const registerClose = document.getElementById('registerClose');
+        const recoveryClose = document.getElementById('recoveryClose');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const forgotPassword = document.getElementById('forgotPassword');
+        const switchToLoginFromRecovery = document.getElementById('switchToLoginFromRecovery');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const recoveryForm = document.getElementById('recoveryForm');
+        const loginUserId = document.getElementById('loginUserId');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginToggle = document.getElementById('loginToggle');
+        const registerName = document.getElementById('registerName');
+        const registerEmail = document.getElementById('registerEmail');
+        const registerMobile = document.getElementById('registerMobile');
+        const registerPassword = document.getElementById('registerPassword');
+        const registerToggle = document.getElementById('registerToggle');
+        const registerConfirmPassword = document.getElementById('registerConfirmPassword');
+        const registerConfirmToggle = document.getElementById('registerConfirmToggle');
+        const registerUserId = document.getElementById('registerUserId');
+        const recoveryEmail = document.getElementById('recoveryEmail');
+        const userGreeting = document.getElementById('userGreeting');
+        const watchNowBtn = document.getElementById('watchNowBtn');
+        const watchTrailerBtn = document.getElementById('watchTrailerBtn');
+        const heroTrailerBtn = document.getElementById('heroTrailerBtn');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoClose = document.getElementById('videoClose');
+        const videoFrame = document.getElementById('videoFrame');
+        const videoTitle = document.getElementById('videoTitle');
+        const videoQualityBtn = document.getElementById('videoQualityBtn');
+        const videoQualityDropdown = document.getElementById('videoQualityDropdown');
+        const episodeCards = document.querySelectorAll('.episode-card');
+        const episodeWatchBtns = document.querySelectorAll('.episode-watch');
+        const submitFeedback = document.getElementById('submitFeedback');
+        const feedbackText = document.getElementById('feedbackText');
+        const facebookShare = document.getElementById('facebookShare');
+        const twitterShare = document.getElementById('twitterShare');
+        const whatsappShare = document.getElementById('whatsappShare');
+        const passwordGeneratorBtn = document.getElementById('passwordGeneratorBtn');
+        const passwordGenerator = document.getElementById('passwordGenerator');
+        const generatePassword = document.getElementById('generatePassword');
+        const copyPassword = document.getElementById('copyPassword');
+        const generatedPassword = document.getElementById('generatedPassword');
+        const lengthSlider = document.getElementById('lengthSlider');
+        const lengthValue = document.getElementById('lengthValue');
+        const uppercase = document.getElementById('uppercase');
+        const numbers = document.getElementById('numbers');
+        const symbols = document.getElementById('symbols');
+        const notificationsBtn = document.getElementById('notificationsBtn');
+        const helpBtn = document.getElementById('helpBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const profileSection = document.getElementById('profileSection');
+        const navLinks = document.getElementById('navLinks');
+        const menuItems = document.querySelectorAll('.menu-item[data-section]');
+
+        // Episode video URLs - Updated with provided links
+        const episodeUrls = {
+            1: 'https://streamlink-7b97c368603e.herokuapp.com/watch/685a098cb4589a315d85b333',
+            2: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685b6754d68fe056e15ff27b',
+            3: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685a1281b4589a315d85b33f',
+            4: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685a12bdb4589a315d85b340',
+            5: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685a1784b4589a315d85b344',
+            6: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685a18beb4589a315d85b345',
+            7: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685a191ab4589a315d85b346',
+            8: 'http://streamlink-7b97c368603e.herokuapp.com/watch/685a1cedb4589a315d85b347'
+        };
+
+        // Check if user has visited before
+        if (!localStorage.getItem('visited')) {
+            welcomeOverlay.classList.remove('hidden');
+            localStorage.setItem('visited', 'true');
+        } else {
+            welcomeOverlay.classList.add('hidden');
+        }
+
+        // Continue button click
+        continueBtn.addEventListener('click', () => {
+            welcomeOverlay.classList.add('hidden');
+        });
+
+        // Hamburger menu toggle
+        hamburger.addEventListener('click', () => {
+            sideMenu.classList.add('active');
+        });
+
+        // Side menu close
+        sideMenuClose.addEventListener('click', () => {
+            sideMenu.classList.remove('active');
+        });
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+            themeToggle.checked = isLight;
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggle.addEventListener('change', toggleTheme);
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
+            themeIcon.className = 'fas fa-sun';
+            themeToggle.checked = true;
+        }
+
+        // Modal controls
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+        });
+
+        registerBtn.addEventListener('click', () => {
+            registerModal.classList.add('active');
+        });
+
+        loginClose.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+        });
+
+        registerClose.addEventListener('click', () => {
+            registerModal.classList.remove('active');
+        });
+
+        recoveryClose.addEventListener('click', () => {
+            recoveryModal.classList.remove('active');
+        });
+
+        switchToRegister.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            registerModal.classList.add('active');
+        });
+
+        switchToLogin.addEventListener('click', () => {
+            registerModal.classList.remove('active');
+            loginModal.classList.add('active');
+        });
+
+        forgotPassword.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            recoveryModal.classList.add('active');
+        });
+
+        switchToLoginFromRecovery.addEventListener('click', () => {
+            recoveryModal.classList.remove('active');
+            loginModal.classList.add('active');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+            }
+            if (e.target === registerModal) {
+                registerModal.classList.remove('active');
+            }
+            if (e.target === recoveryModal) {
+                recoveryModal.classList.remove('active');
+            }
+        });
+
+        // Password toggle visibility
+        function togglePasswordVisibility(input, toggle) {
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                input.type = 'password';
+                toggle.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
+        loginToggle.addEventListener('click', () => {
+            togglePasswordVisibility(loginPassword, loginToggle);
+        });
+
+        registerToggle.addEventListener('click', () => {
+            togglePasswordVisibility(registerPassword, registerToggle);
+        });
+
+        registerConfirmToggle.addEventListener('click', () => {
+            togglePasswordVisibility(registerConfirmPassword, registerConfirmToggle);
+        });
+
+        // Generate User ID
+        registerName.addEventListener('input', generateUserId);
+        registerMobile.addEventListener('input', generateUserId);
+
+        function generateUserId() {
+            const name = registerName.value.trim();
+            const mobile = registerMobile.value.trim();
+            
+            if (name && mobile) {
+                const namePart = name.substring(0, 3).toUpperCase();
+                const mobilePart = mobile.substring(mobile.length - 4);
+                registerUserId.value = namePart + mobilePart;
+            }
+        }
+
+        // User authentication
+        let currentUser = null;
+
+        // Pre-registered account
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const defaultUser = {
+            userId: 'Murli',
+            name: 'Murlikumar',
+            email: 'murlikumar@example.com',
+            mobile: '9973554502',
+            password: 'Panchayat'
+        };
+
+        // Add default user if not exists
+        if (!users.some(user => user.userId === defaultUser.userId)) {
+            users.push(defaultUser);
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const userId = loginUserId.value.trim();
+            const password = loginPassword.value.trim();
+            
+            const user = users.find(u => u.userId === userId && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                updateUI();
+                loginModal.classList.remove('active');
+                showAlert('Login successful!', 'success');
+            } else {
+                showAlert('Invalid User ID or Password', 'error');
+            }
+        });
+
+        // Register form submission
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = registerName.value.trim();
+            const email = registerEmail.value.trim();
+            const mobile = registerMobile.value.trim();
+            const password = registerPassword.value;
+            const confirmPassword = registerConfirmPassword.value;
+            const userId = registerUserId.value.trim();
+            
+            // Validation
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+            
+            if (users.some(u => u.userId === userId)) {
+                showAlert('User ID already exists', 'error');
+                return;
+            }
+            
+            if (users.some(u => u.email === email)) {
+                showAlert('Email already registered', 'error');
+                return;
+            }
+            
+            const newUser = {
+                userId,
+                name,
+                email,
+                mobile,
+                password
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            registerModal.classList.remove('active');
+            updateUI();
+            showAlert('Registration successful!', 'success');
+        });
+
+        // Password recovery
+        recoveryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = recoveryEmail.value.trim();
+            const user = users.find(u => u.email === email);
+            
+            if (user) {
+                showAlert(`Password recovery link sent to ${email}. Your User ID is ${user.userId}`, 'success');
+                recoveryModal.classList.remove('active');
+            } else {
+                showAlert('Email not found', 'error');
+            }
+        });
+
+        // Check for logged in user on page load
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                currentUser = user;
+                updateUI();
+            }
+        }
+
+        // Update UI based on authentication status
+        function updateUI() {
+            if (currentUser) {
+                // Update header
+                userGreeting.textContent = `Hello, ${currentUser.name}!`;
+                navLinks.innerHTML = `
+                    <span class="user-greeting" id="userGreeting">Hello, ${currentUser.name}!</span>
+                    <button class="btn btn-secondary" id="watchTrailerBtn">Watch Trailer</button>
+                    <button class="btn btn-primary" id="logoutBtnHeader">Logout</button>
+                `;
+                
+                // Add event listener to new logout button
+                document.getElementById('logoutBtnHeader').addEventListener('click', logout);
+                
+                // Update side menu
+                profileSection.style.display = 'block';
+                
+                // Add event listener to side menu logout button
+                logoutBtn.addEventListener('click', logout);
+            } else {
+                // Reset header
+                userGreeting.textContent = '';
+                navLinks.innerHTML = `
+                    <button class="btn btn-primary" id="loginBtn">Login</button>
+                    <button class="btn btn-secondary" id="registerBtn">Register</button>
+                `;
+                
+                // Add event listeners to new buttons
+                document.getElementById('loginBtn').addEventListener('click', () => loginModal.classList.add('active'));
+                document.getElementById('registerBtn').addEventListener('click', () => registerModal.classList.add('active'));
+                
+                // Update side menu
+                profileSection.style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUI();
+            showAlert('Logged out successfully', 'success');
+        }
+
+        // Watch Now button click
+        watchNowBtn.addEventListener('click', () => {
+            if (currentUser) {
+                // Play first episode
+                videoTitle.textContent = 'Panchayat Season 4 - Episode 1';
+                videoFrame.src = episodeUrls[1];
+                videoPlayer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                showAlert('Please login to watch', 'error');
+            }
+        });
+
+        // Watch Trailer buttons
+        function playTrailer() {
+            if (currentUser) {
+                videoTitle.textContent = 'Panchayat Season 4 Trailer';
+                videoFrame.src = 'https://www.youtube.com/embed/AHMEtNAZTP4?autoplay=1';
+                videoPlayer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                showAlert('Please login to watch the trailer', 'error');
+            }
+        }
+
+        watchTrailerBtn.addEventListener('click', playTrailer);
+        heroTrailerBtn.addEventListener('click', playTrailer);
+
+        // Video quality controls
+        videoQualityBtn.addEventListener('click', () => {
+            videoQualityDropdown.classList.toggle('show');
+        });
+
+        // Close quality dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!videoQualityBtn.contains(e.target) && !videoQualityDropdown.contains(e.target)) {
+                videoQualityDropdown.classList.remove('show');
+            }
+        });
+
+        // Close video player
+        videoClose.addEventListener('click', () => {
+            videoPlayer.classList.remove('active');
+            videoFrame.src = '';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Episode cards
+        episodeCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't trigger if clicking on the watch button
+                if (!e.target.classList.contains('episode-watch') && !e.target.closest('.episode-watch')) {
+                    if (currentUser) {
+                        const episode = card.getAttribute('data-episode');
+                        videoTitle.textContent = `Panchayat Season 4 - Episode ${episode}`;
+                        videoFrame.src = episodeUrls[episode];
+                        videoPlayer.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        showAlert('Please login to watch episodes', 'error');
+                    }
+                }
+            });
+        });
+
+        episodeWatchBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (currentUser) {
+                    const episode = btn.closest('.episode-card').getAttribute('data-episode');
+                    videoTitle.textContent = `Panchayat Season 4 - Episode ${episode}`;
+                    videoFrame.src = episodeUrls[episode];
+                    videoPlayer.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    showAlert('Please login to watch episodes', 'error');
+                }
+            });
+        });
+
+        // Submit feedback
+        submitFeedback.addEventListener('click', () => {
+            if (feedbackText.value.trim()) {
+                showAlert('Thank you for your feedback!', 'success');
+                feedbackText.value = '';
+            } else {
+                showAlert('Please enter your feedback', 'error');
+            }
+        });
+
+        // Share buttons
+        const shareUrl = encodeURIComponent(window.location.href);
+        const shareText = encodeURIComponent('Check out Panchayat Season 4 on MK Player!');
+
+        facebookShare.addEventListener('click', () => {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, '_blank');
+        });
+
+        twitterShare.addEventListener('click', () => {
+            window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
+        });
+
+        whatsappShare.addEventListener('click', () => {
+            window.open(`https://wa.me/?text=${shareText}%20${shareUrl}`, '_blank');
+        });
+
+        // Password generator
+        passwordGeneratorBtn.addEventListener('click', () => {
+            passwordGenerator.style.display = passwordGenerator.style.display === 'block' ? 'none' : 'block';
+        });
+
+        lengthSlider.addEventListener('input', () => {
+            lengthValue.textContent = lengthSlider.value;
+        });
+
+        generatePassword.addEventListener('click', () => {
+            const length = parseInt(lengthSlider.value);
+            const includeUppercase = uppercase.checked;
+            const includeNumbers = numbers.checked;
+            const includeSymbols = symbols.checked;
+            
+            let charset = 'abcdefghijklmnopqrstuvwxyz';
+            if (includeUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (includeNumbers) charset += '0123456789';
+            if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+            }
+            
+            generatedPassword.value = password;
+        });
+
+        copyPassword.addEventListener('click', () => {
+            generatedPassword.select();
+            document.execCommand('copy');
+            showAlert('Password copied to clipboard!', 'success');
+        });
+
+        // Notifications button
+        notificationsBtn.addEventListener('click', () => {
+            showAlert('Notifications feature coming soon!', 'info');
+        });
+
+        // Help button
+        helpBtn.addEventListener('click', () => {
+            showAlert('For any assistance, please contact support@mkplayer.com', 'info');
+        });
+
+        // Menu items scroll to sections
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const sectionId = item.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                    sideMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Show alert function
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.position = 'fixed';
+            alert.style.bottom = '20px';
+            alert.style.right = '20px';
+            alert.style.padding = '15px 20px';
+            alert.style.borderRadius = '5px';
+            alert.style.color = 'white';
+            alert.style.backgroundColor = type === 'error' ? '#ff6b6b' : type === 'success' ? '#4CAF50' : '#00a8e1';
+            alert.style.zIndex = '1005';
+            alert.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+            alert.style.animation = 'fadeIn 0.3s';
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.animation = 'fadeOut 0.3s';
+                setTimeout(() => {
+                    document.body.removeChild(alert);
+                }, 300);
+            }, 3000);
+        }
+
+        // Check auth on page load
+        checkAuth();
+
+        // Add CSS for alerts
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(20px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
